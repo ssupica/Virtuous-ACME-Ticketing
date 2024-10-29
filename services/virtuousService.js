@@ -1,6 +1,5 @@
 // services/virtuousService.js
 const axios = require('axios');
-const axiosRetry = require('axios-retry');
 
 // Create an Axios instance for Virtuous API
 const virtuousApi = axios.create({
@@ -8,18 +7,15 @@ const virtuousApi = axios.create({
   headers: { Authorization: `Bearer ${process.env.VIRTUOUS_API_KEY}` }
 });
 
-// Configure retry logic
-axiosRetry(virtuousApi, { retries: 3, retryDelay: axiosRetry.exponentialDelay });
-
-// Function to create a contact in Virtuous
-async function createContact(contactData) {
+// Function to fetch donors from Virtuous
+async function getDonors() {
   try {
-    const response = await virtuousApi.post('/contacts', contactData);
+    const response = await virtuousApi.get('/donors');
     return response.data;
   } catch (error) {
-    console.error('Error creating contact in Virtuous:', error);
+    console.error('Error fetching donors from Virtuous:', error);
     throw error;
   }
 }
 
-module.exports = { createContact };
+module.exports = { getDonors };
