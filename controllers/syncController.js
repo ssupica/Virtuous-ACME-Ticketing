@@ -12,7 +12,7 @@ function transformAttendeeToContact(attendee) {
 }
 
 // Sync attendees from Acme to Virtuous
-async function syncAttendees(req, res) {
+const syncAttendees = async (req, res) => {
   // Check API key for security
   const apiKey = req.headers['x-api-key'];
   if (apiKey !== process.env.SYNC_API_KEY) {
@@ -38,6 +38,7 @@ async function syncAttendees(req, res) {
     // Return sync results
     res.status(200).json({ results });
   } catch (error) {
+    console.error(error); // Log the error for debugging
     res.status(500).json({ error: 'Sync process failed' });
   }
 }
