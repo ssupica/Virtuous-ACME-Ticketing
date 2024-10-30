@@ -1,110 +1,85 @@
 // services/virtuousService.js
 const axios = require('axios');
 
+// Set up Virtuous base URL
+const virtuousBaseUrl = process.env.VIRTUOUS_BASE_URL;
+
 // Create an Axios instance for Virtuous API
 const virtuousApi = axios.create({
-  baseURL: process.env.VIRTUOUS_BASE_URL,
-  headers: { Authorization: `Bearer ${process.env.VIRTUOUS_API_KEY}` },
+  baseURL: virtuousBaseUrl,
+  headers: { Authorization: `Bearer ${process.env.VIRTUOUS_API_KEY}` }
 });
 
-// Function to get a list of donors
-async function getDonors(params) {
-  try {
-    const response = await virtuousApi.get('/donors', { params });
-    return response.data;
-  } catch (error) {
-    console.error('Error fetching donors:', error);
-    throw error;
-  }
+// Function to create a new contact
+async function createContact(contactData) {
+  const response = await virtuousApi.post('/api/contacts', contactData);
+  return response.data;
 }
 
-// Function to get a specific donor by ID
-async function getDonorById(donorId) {
-  try {
-    const response = await virtuousApi.get(`/donors/${donorId}`);
-    return response.data;
-  } catch (error) {
-    console.error(`Error fetching donor with ID ${donorId}:`, error);
-    throw error;
-  }
+// Function to get a contact by ID
+async function getContactById(contactId) {
+  const response = await virtuousApi.get(`/api/contacts/${contactId}`);
+  return response.data;
 }
 
-// Function to create a new donor
-async function createDonor(donorData) {
-  try {
-    const response = await virtuousApi.post('/donors', donorData);
-    return response.data;
-  } catch (error) {
-    console.error('Error creating donor:', error);
-    throw error;
-  }
+// Function to update a contact
+async function updateContact(contactId, contactData) {
+  const response = await virtuousApi.put(`/api/contacts/${contactId}`, contactData);
+  return response.data;
 }
 
-// Function to update a donor
-async function updateDonor(donorId, donorData) {
-  try {
-    const response = await virtuousApi.put(`/donors/${donorId}`, donorData);
-    return response.data;
-  } catch (error) {
-    console.error(`Error updating donor with ID ${donorId}:`, error);
-    throw error;
-  }
+// Function to delete a contact
+async function deleteContact(contactId) {
+  const response = await virtuousApi.delete(`/api/contacts/${contactId}`);
+  return response.data;
 }
 
-// Function to delete a donor
-async function deleteDonor(donorId) {
-  try {
-    await virtuousApi.delete(`/donors/${donorId}`);
-    return { message: 'Donor deleted successfully' };
-  } catch (error) {
-    console.error(`Error deleting donor with ID ${donorId}:`, error);
-    throw error;
-  }
-}
-
-// Function to get donations
-async function getDonations(params) {
-  try {
-    const response = await virtuousApi.get('/donations', { params });
-    return response.data;
-  } catch (error) {
-    console.error('Error fetching donations:', error);
-    throw error;
-  }
-}
-
-// Function to get a specific donation by ID
-async function getDonationById(donationId) {
-  try {
-    const response = await virtuousApi.get(`/donations/${donationId}`);
-    return response.data;
-  } catch (error) {
-    console.error(`Error fetching donation with ID ${donationId}:`, error);
-    throw error;
-  }
+// Function to get all donations
+async function getDonations() {
+  const response = await virtuousApi.get('/api/donations');
+  return response.data;
 }
 
 // Function to create a new donation
 async function createDonation(donationData) {
-  try {
-    const response = await virtuousApi.post('/donations', donationData);
-    return response.data;
-  } catch (error) {
-    console.error('Error creating donation:', error);
-    throw error;
-  }
+  const response = await virtuousApi.post('/api/donations', donationData);
+  return response.data;
 }
 
-// Add more functions for other endpoints as needed based on the documentation...
+// Function to get donation by ID
+async function getDonationById(donationId) {
+  const response = await virtuousApi.get(`/api/donations/${donationId}`);
+  return response.data;
+}
 
+// Function to update a donation
+async function updateDonation(donationId, donationData) {
+  const response = await virtuousApi.put(`/api/donations/${donationId}`, donationData);
+  return response.data;
+}
+
+// Function to delete a donation
+async function deleteDonation(donationId) {
+  const response = await virtuousApi.delete(`/api/donations/${donationId}`);
+  return response.data;
+}
+
+// Function to get all campaigns
+async function getCampaigns() {
+  const response = await virtuousApi.get('/api/campaigns');
+  return response.data;
+}
+
+// Export the functions
 module.exports = {
-  getDonors,
-  getDonorById,
-  createDonor,
-  updateDonor,
-  deleteDonor,
+  createContact,
+  getContactById,
+  updateContact,
+  deleteContact,
   getDonations,
-  getDonationById,
   createDonation,
-  // Export other functions here...
+  getDonationById,
+  updateDonation,
+  deleteDonation,
+  getCampaigns
 };
